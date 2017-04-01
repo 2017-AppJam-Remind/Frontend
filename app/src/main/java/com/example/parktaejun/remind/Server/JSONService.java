@@ -1,5 +1,8 @@
 package com.example.parktaejun.remind.Server;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.util.List;
 
@@ -33,5 +36,5 @@ public interface JSONService {
 
     @FormUrlEncoded
     @POST("/get")
-    Call<Remind> download(@Field("location") String location);
+    Call<JSONArray> download(@Field("location") String location);
 }

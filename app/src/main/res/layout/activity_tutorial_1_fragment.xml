@@ -6,13 +6,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.example.parktaejun.remind.Tutorial.Tutorial_1_Fragment">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="Tut1"/>
-
     <ImageView
+        android:background="@drawable/splash_1"
         android:id="@+id/tutorial1"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

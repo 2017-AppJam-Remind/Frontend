@@ -6,13 +6,13 @@ package com.example.parktaejun.remind.Datas;
 
 public class Data {
 
-    private String image;
-    private String date;
-    private String name;
-    private String weather;
-    private String memo;
+    private Object image;
+    private Object date;
+    private Object name;
+    private Object weather;
+    private Object memo;
 
-    public Data(String image, String date, String name, String weather, String memo){
+    public Data(Object image, Object date, Object name, Object weather, Object memo){
         this.image = image;
         this.date = date;
         this.name = name;
@@ -20,38 +20,38 @@ public class Data {
         this.memo = memo;
     }
 
-    public String getImage(){
+    public Object getImage(){
         return image;
     }
-    public void setImage(String image){
+    public void setImage(Object image){
         this.image = image;
     }
 
-    public String getDate(){
+    public Object getDate(){
         return date;
     }
-    public void setDate(String date){
+    public void setDate(Object date){
         this.date = date;
     }
 
-    public String getName(){
+    public Object getName(){
         return name;
     }
-    public void setName(String name){
+    public void setName(Object name){
         this.name = name;
     }
 
-    public String getWeather(){
+    public Object getWeather(){
         return weather;
     }
-    public void setWeather(String weather){
+    public void setWeather(Object weather){
         this.weather = weather;
     }
 
-    public String getMemo(){
+    public Object getMemo(){
         return memo;
     }
-    public void setMemo(String memo){
+    public void setMemo(Object memo){
         this.memo = memo;
     }
 

@@ -7,18 +7,8 @@
     android:orientation="vertical"
     tools:context="com.example.parktaejun.remind.Tutorial.Tutorial_4_Fragment">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="Tut4"/>
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:text="Hello"/>
-
     <ImageView
+        android:background="@drawable/touch"
         android:id="@+id/tutorial4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

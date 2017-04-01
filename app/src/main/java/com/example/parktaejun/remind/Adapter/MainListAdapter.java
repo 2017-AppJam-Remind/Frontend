@@ -57,13 +57,13 @@ public class MainListAdapter extends ArrayAdapter<Data> {
             TextView nameText = (TextView) view.findViewById(R.id.name);
             TextView memoText = (TextView) view.findViewById(R.id.memo);
 
-            String url = data.getImage();
+            String url = (String) data.getImage();
             Picasso.with(getContext())
                     .load(url)
                     .into(imageView);
-            dateText.setText(data.getDate());
-            nameText.setText(data.getName());
-            memoText.setText(data.getMemo());
+            dateText.setText((String) data.getDate());
+            nameText.setText((String) data.getName());
+            memoText.setText((String) data.getMemo());
         }
         return view;
     }

@@ -47,8 +47,6 @@ public class InfoActivity extends AppCompatActivity {
         rain = (ImageView)findViewById(R.id.rain);
         snow = (ImageView)findViewById(R.id.snow);
 
-        button = (Button)findViewById(R.id.button);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowCustomEnabled(true);

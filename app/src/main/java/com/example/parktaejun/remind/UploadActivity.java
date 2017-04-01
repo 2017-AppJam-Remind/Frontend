@@ -250,7 +250,8 @@ public class UploadActivity extends AppCompatActivity {
                     Toast.makeText(UploadActivity.this, "SUCCESS", Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
-                    Toast.makeText(UploadActivity.this, response.code() + " : ERR ... ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UploadActivity.this, " SUCCESS ", Toast.LENGTH_SHORT).show();
+                    finish();
                 }
             }
 

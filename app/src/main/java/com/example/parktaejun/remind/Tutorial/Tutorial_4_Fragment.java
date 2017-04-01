@@ -61,17 +61,13 @@ public class Tutorial_4_Fragment extends Fragment {
                 linearLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent mainIntent = new Intent(getActivity(), MainActivity.class);
                         bt.send("z", true);
-                        startActivity(mainIntent);
-                        getActivity().finish();
                     }
                 });
             }
 
             public void onAutoConnectionStarted() {
                 Toast.makeText(getContext(), "자동연결이 시작되었습니다", Toast.LENGTH_SHORT).show();
-                bt.send("z", true);
             }
         });
 
@@ -81,6 +77,8 @@ public class Tutorial_4_Fragment extends Fragment {
                 Toast.makeText(getContext(), "데이터를 받아옵니다", Toast.LENGTH_SHORT).show();
                 Intent mainIntent = new Intent(getActivity(), MainActivity.class);
                 mainIntent.putExtra("message", message);
+                startActivity(mainIntent);
+                getActivity().finish();
             }
         });
         return view;
