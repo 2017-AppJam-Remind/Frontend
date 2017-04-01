@@ -109,7 +109,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent" />
             <Button
-                android:textColor="9d89fe"
+                android:textColor="#9d89fe"
                 android:background="@drawable/button"
                 android:text="업로드"
                 android:id="@+id/upload"
@@ -121,7 +121,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent" />
             <Button
-                android:textColor="9d89fe"
+                android:textColor="#9d89fe"
                 android:background="@drawable/button"
                 android:text="취소"
                 android:id="@+id/cancel"

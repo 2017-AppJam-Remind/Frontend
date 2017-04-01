@@ -21,24 +21,17 @@ public interface JSONService {
 
     @FormUrlEncoded
     @POST("/one")
-    Call<RemindUp> one_upload(@Field("name") String image, @Field("weather") String user_pw, @Field("memo") String user_name, @Field("file") File file);
+    Call<RemindUp> one_upload(@Field("name") String name, @Field("weather") String weather, @Field("memo") String memo, @Field("file") File file);
 
     @FormUrlEncoded
     @POST("/two")
-    Call<RemindUp> two_upload(@Field("name") String image, @Field("weather") String user_pw, @Field("memo") String user_name, @Field("file") File file);
+    Call<RemindUp> two_upload(@Field("name") String name, @Field("weather") String weather, @Field("memo") String memo, @Field("file") File file);
 
     @FormUrlEncoded
     @POST("/three")
-    Call<RemindUp> three_upload(@Field("name") String image, @Field("weather") String user_pw, @Field("memo") String user_name, @Field("file") File file);
+    Call<RemindUp> three_upload(@Field("name") String name, @Field("weather") String weather, @Field("memo") String memo, @Field("file") File file);
 
     @FormUrlEncoded
     @POST("/get")
     Call<Remind> download(@Field("location") String location);
-
-    @Multipart
-    @POST("/one")
-    Call<ResponseBody> upload(
-            @Part("description") RequestBody description,
-            @Part MultipartBody.Part file
-    );
 }
