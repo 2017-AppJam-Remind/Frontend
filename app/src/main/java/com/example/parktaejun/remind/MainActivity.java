@@ -5,7 +5,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -49,6 +51,17 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         listview = (ListView)findViewById(R.id.listview);
         mainListAdapter = new MainListAdapter(this, items);
         listview.setAdapter(mainListAdapter);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+//        getSupportActionBar().setTitle(chatName);
+//        getSupportActionBar().setDisplayShowHomeEnabled(true);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
+        View toolbar_view = LayoutInflater.from(this).inflate(R.layout.toolbar, null);
+        getSupportActionBar().setCustomView(toolbar_view);
 
         bt = new BluetoothSPP(this);
 

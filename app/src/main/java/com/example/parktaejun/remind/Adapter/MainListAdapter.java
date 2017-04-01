@@ -53,15 +53,17 @@ public class MainListAdapter extends ArrayAdapter<Data> {
 
         if (data != null) {
             ImageView imageView = (ImageView)view.findViewById(R.id.image);
+            TextView dateText = (TextView) view.findViewById(R.id.date);
             TextView nameText = (TextView) view.findViewById(R.id.name);
-            TextView weatherText = (TextView) view.findViewById(R.id.weather);
+            TextView memoText = (TextView) view.findViewById(R.id.memo);
 
             String url = data.getImage();
             Picasso.with(getContext())
                     .load(url)
                     .into(imageView);
+            dateText.setText(data.getDate());
             nameText.setText(data.getName());
-            weatherText.setText(data.getWeather());
+            memoText.setText(data.getMemo());
         }
         return view;
     }

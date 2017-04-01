@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -44,7 +45,10 @@ public class UploadActivity extends AppCompatActivity {
     ImageButton imageButton;
     TextView date;
     EditText name;
-    EditText weather;
+    ImageView sun;
+    ImageView cloud;
+    ImageView rain;
+    ImageView snow;
     EditText memo;
     Button upload;
     Button cancel;
@@ -53,6 +57,8 @@ public class UploadActivity extends AppCompatActivity {
     JSONService jsonService;
     String check;
     File file;
+
+    String weather;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +72,13 @@ public class UploadActivity extends AppCompatActivity {
         imageButton = (ImageButton) findViewById(R.id.image);
         date = (TextView) findViewById(R.id.date);
         name = (EditText) findViewById(R.id.name);
-        weather = (EditText) findViewById(R.id.weather);
         memo = (EditText) findViewById(R.id.memo);
+
+        sun = (ImageView)findViewById(R.id.sun);
+        cloud = (ImageView)findViewById(R.id.cloud);
+        rain = (ImageView)findViewById(R.id.rain);
+        snow = (ImageView)findViewById(R.id.snow);
+
         upload = (Button) findViewById(R.id.upload);
         cancel = (Button) findViewById(R.id.cancel);
 
@@ -76,6 +87,50 @@ public class UploadActivity extends AppCompatActivity {
 
         String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
         date.setText(currentDateTimeString);
+
+        sun.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sun.setImageResource(R.drawable.clicked_sun);
+                cloud.setImageResource(R.drawable.unclicked_cloud);
+                rain.setImageResource(R.drawable.unclicked_rain);
+                snow.setImageResource(R.drawable.unclicked_snow);
+                weather = "1";
+            }
+        });
+
+        cloud.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sun.setImageResource(R.drawable.unclicked_sun);
+                cloud.setImageResource(R.drawable.clicked_cloud);
+                rain.setImageResource(R.drawable.unclicked_rain);
+                snow.setImageResource(R.drawable.unclicked_snow);
+                weather = "2";
+            }
+        });
+
+        rain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sun.setImageResource(R.drawable.unclicked_sun);
+                cloud.setImageResource(R.drawable.unclicked_cloud);
+                rain.setImageResource(R.drawable.clicked_rain);
+                snow.setImageResource(R.drawable.unclicked_snow);
+                weather = "3";
+            }
+        });
+
+        snow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sun.setImageResource(R.drawable.unclicked_sun);
+                cloud.setImageResource(R.drawable.unclicked_cloud);
+                rain.setImageResource(R.drawable.unclicked_rain);
+                snow.setImageResource(R.drawable.clicked_snow);
+                weather = "4";
+            }
+        });
 
         retrofit = new Retrofit.Builder().baseUrl("http://soylatte.kr:3000").addConverterFactory(GsonConverterFactory.create()).build();
         jsonService = retrofit.create(JSONService.class);
@@ -164,7 +219,7 @@ public class UploadActivity extends AppCompatActivity {
 
     public void one_upload(){
         Call<RemindUp> call;
-        call = jsonService.one_upload(name.getText().toString(), weather.getText().toString(), memo.getText().toString(), file);
+        call = jsonService.one_upload(name.getText().toString(), weather, memo.getText().toString(), file);
         call.enqueue(new Callback<RemindUp>() {
             @Override
             public void onResponse(Call<RemindUp> call, Response<RemindUp> response) {
@@ -184,7 +239,7 @@ public class UploadActivity extends AppCompatActivity {
 
     public void two_upload(){
         Call<RemindUp> call;
-        call = jsonService.two_upload(name.getText().toString(), weather.getText().toString(), memo.getText().toString(), file);
+        call = jsonService.two_upload(name.getText().toString(), weather, memo.getText().toString(), file);
         call.enqueue(new Callback<RemindUp>() {
             @Override
             public void onResponse(Call<RemindUp> call, Response<RemindUp> response) {
@@ -204,7 +259,7 @@ public class UploadActivity extends AppCompatActivity {
 
     public void three_upload(){
         Call<RemindUp> call;
-        call = jsonService.three_upload(name.getText().toString(), weather.getText().toString(), memo.getText().toString(), file);
+        call = jsonService.three_upload(name.getText().toString(), weather, memo.getText().toString(), file);
         call.enqueue(new Callback<RemindUp>() {
             @Override
             public void onResponse(Call<RemindUp> call, Response<RemindUp> response) {
