@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.example.parktaejun.remind.Adapter.Adapter_Tutorial;
+import com.example.parktaejun.remind.Adapter.TutorialAdapter;
 
 public class TutorialActivity extends AppCompatActivity {
 
@@ -16,8 +16,12 @@ public class TutorialActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutorial);
 
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        //전체화면 만들기
+
         viewPager = (ViewPager) findViewById(R.id.viewPager);
-        Adapter_Tutorial adapter_tutorial = new Adapter_Tutorial(getSupportFragmentManager(), 4);
-        viewPager.setAdapter(adapter_tutorial);
+        TutorialAdapter tutorialAdapter = new TutorialAdapter(getSupportFragmentManager(), 4);
+        viewPager.setAdapter(tutorialAdapter);
     }
 }

@@ -13,11 +13,11 @@ import com.example.parktaejun.remind.Tutorial.Tutorial_4_Fragment;
  * Created by parktaejun on 2017. 4. 1..
  */
 
-public class Adapter_Tutorial extends FragmentStatePagerAdapter{
+public class TutorialAdapter extends FragmentStatePagerAdapter{
 
     private int tabCount;
 
-    public Adapter_Tutorial(FragmentManager fm, int tabCount) {
+    public TutorialAdapter(FragmentManager fm, int tabCount) {
         super(fm);
         this.tabCount = tabCount;
     }
