@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
@@ -11,7 +13,10 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,6 +33,8 @@ import com.example.parktaejun.remind.Server.RemindUp;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -57,7 +64,6 @@ public class UploadActivity extends AppCompatActivity {
     JSONService jsonService;
     String check;
     File file;
-
     String weather;
 
     @Override
@@ -87,6 +93,23 @@ public class UploadActivity extends AppCompatActivity {
 
         String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
         date.setText(currentDateTimeString);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        View toolbar_view = LayoutInflater.from(this).inflate(R.layout.toolbar, null);
+        final ImageView title = (ImageView) toolbar_view.findViewById(R.id.toolbar_title);
+        title.setImageResource(R.drawable.logo);
+        getSupportActionBar().setCustomView(toolbar_view);
+
+        toolbar_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("TAG", "click");
+                finish();
+            }
+        });
 
         sun.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,17 +164,26 @@ public class UploadActivity extends AppCompatActivity {
             public void onClick(View v) {
                 addImage();
                 file = getNewFile(v.getContext(), "remind");
+                Toast.makeText(UploadActivity.this, "add after", Toast.LENGTH_SHORT).show();
+                if(file.exists()){
+                    Bitmap myBitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                    ImageView myImage = (ImageView) findViewById(R.id.image);
+                    myImage.setImageBitmap(myBitmap);
+                }
             }
+
         });
 
         upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(check.equals("1")){
+                Toast.makeText(UploadActivity.this, "Location : " + check, Toast.LENGTH_SHORT).show();
+
+                if(check.equals("one")){
                     one_upload();
-                }else if(check.equals("2")){
+                }else if(check.equals("two")){
                     two_upload();
-                }else if(check.equals("3")){
+                }else if(check.equals("three")){
                     three_upload();
                 }else{
                     Toast.makeText(UploadActivity.this, "ERR ...", Toast.LENGTH_SHORT).show();
@@ -174,6 +206,27 @@ public class UploadActivity extends AppCompatActivity {
         if(resultCode == RESULT_OK){
             if(requestCode == MY_PERMISSION_REQUEST_STORAGE){
                 mImageUri = data.getData();
+                try {
+                    //Uri에서 이미지 이름을 얻어온다.
+                    //String name_Str = getImageNameToUri(data.getData());
+
+                    //이미지 데이터를 비트맵으로 받아온다.
+                    Bitmap image_bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
+
+                    //배치해놓은 ImageView에 set
+                    imageButton.setImageBitmap(image_bitmap);
+
+                    //Toast.makeText(getBaseContext(), "name_Str : "+name_Str , Toast.LENGTH_SHORT).show();
+
+                }
+
+                catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();			}
+
             }
         }
     }
@@ -185,9 +238,7 @@ public class UploadActivity extends AppCompatActivity {
     }
 
     public static String getFolderName(String name) {
-        File mediaStorageDir =
-                new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-                        name);
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), name);
 
         if (!mediaStorageDir.exists()) {
             if (!mediaStorageDir.mkdirs()) {
@@ -226,6 +277,8 @@ public class UploadActivity extends AppCompatActivity {
                 if(response.code() == 200){
                     Toast.makeText(UploadActivity.this, "SUCCESS", Toast.LENGTH_SHORT).show();
                     finish();
+                }else{
+                    Toast.makeText(UploadActivity.this, response.code() + " : ERR ... ", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -283,8 +336,9 @@ public class UploadActivity extends AppCompatActivity {
 
     public void reqPermission(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if(checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-                requestPermissions(new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSION_REQUEST_STORAGE);
+            if(checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
+                    checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+                requestPermissions(new String[] {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 100);
             }
         }
     }

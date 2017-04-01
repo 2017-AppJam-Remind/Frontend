@@ -53,11 +53,9 @@ public class InfoActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-//        getSupportActionBar().setTitle(chatName);
-//        getSupportActionBar().setDisplayShowHomeEnabled(true);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
         View toolbar_view = LayoutInflater.from(this).inflate(R.layout.toolbar, null);
+        final ImageView title = (ImageView) toolbar_view.findViewById(R.id.toolbar_title);
+        title.setImageResource(R.drawable.logo);
         getSupportActionBar().setCustomView(toolbar_view);
 
         toolbar_view.setOnClickListener(new View.OnClickListener() {

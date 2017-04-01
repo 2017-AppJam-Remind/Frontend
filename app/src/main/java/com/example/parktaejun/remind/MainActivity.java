@@ -1,6 +1,7 @@
 package com.example.parktaejun.remind;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -53,16 +55,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         mainListAdapter = new MainListAdapter(this, items);
         listview.setAdapter(mainListAdapter);
 
+        final Button button = (Button)findViewById(R.id.btn);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-//        getSupportActionBar().setTitle(chatName);
-//        getSupportActionBar().setDisplayShowHomeEnabled(true);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
         View toolbar_view = LayoutInflater.from(this).inflate(R.layout.toolbar, null);
-        ImageView title = (ImageView) toolbar_view.findViewById(R.id.toolbar_title);
+        final ImageView title = (ImageView) toolbar_view.findViewById(R.id.toolbar_title);
         title.setImageResource(R.drawable.logo);
         getSupportActionBar().setCustomView(toolbar_view);
 
@@ -87,11 +87,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         {
             public void onDeviceConnected(String name, String address) {
                 Toast.makeText(getApplicationContext(), "연결되었습니다", Toast.LENGTH_SHORT).show();
-                bt.send("z", true);
-                bt.send("z", true);
-                bt.send("z", true);
-                bt.send("z", true);
-                bt.send("z", true);g
             }
 
             public void onDeviceDisconnected() {
@@ -106,6 +101,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         bt.setAutoConnectionListener(new BluetoothSPP.AutoConnectionListener() {
             public void onNewConnection(String name, String address) {
                 Toast.makeText(getApplicationContext(), "새롭게 연결하였습니다", Toast.LENGTH_SHORT).show();
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        bt.send("z",true);
+                    }
+                });
             }
 
             public void onAutoConnectionStarted() {
@@ -201,7 +202,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 }
                 @Override
                 public void onFailure(Call<Remind> call, Throwable t) {
-                    Toast.makeText(getApplicationContext(), receive + "번 알수없는 에러에요..", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "main : " + receive + "번 알수없는 에러에요..", Toast.LENGTH_SHORT).show();
                 }
             });
     }
