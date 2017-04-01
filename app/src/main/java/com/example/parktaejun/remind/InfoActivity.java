@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.parktaejun.remind.Font.Font;
 import com.squareup.picasso.Picasso;
@@ -22,7 +23,6 @@ public class InfoActivity extends AppCompatActivity {
     ImageView imageView;
     TextView date;
     TextView name;
-    TextView weather;
     TextView memo;
     ImageView sun;
     ImageView cloud;
@@ -77,8 +77,34 @@ public class InfoActivity extends AppCompatActivity {
 
         date.setText(intent.getStringExtra("date"));
         name.setText(intent.getStringExtra("name"));
-        weather.setText(intent.getStringExtra("weather"));
         memo.setText(intent.getStringExtra("memo"));
+
+        String weather = intent.getStringExtra("weather");
+
+        if(weather.equals("1")){
+            sun.setImageResource(R.drawable.clicked_sun);
+            cloud.setImageResource(R.drawable.unclicked_cloud);
+            rain.setImageResource(R.drawable.unclicked_rain);
+            snow.setImageResource(R.drawable.unclicked_snow);
+        }else if(weather.equals("2")){
+            sun.setImageResource(R.drawable.unclicked_sun);
+            cloud.setImageResource(R.drawable.clicked_cloud);
+            rain.setImageResource(R.drawable.unclicked_rain);
+            snow.setImageResource(R.drawable.unclicked_snow);
+        }else if(weather.equals("3")){
+            sun.setImageResource(R.drawable.unclicked_sun);
+            cloud.setImageResource(R.drawable.unclicked_cloud);
+            rain.setImageResource(R.drawable.clicked_rain);
+            snow.setImageResource(R.drawable.unclicked_snow);
+        }else if(weather.equals("4")){
+            sun.setImageResource(R.drawable.unclicked_sun);
+            cloud.setImageResource(R.drawable.unclicked_cloud);
+            rain.setImageResource(R.drawable.unclicked_rain);
+            snow.setImageResource(R.drawable.clicked_snow);
+        }else{
+            Toast.makeText(this, "fucking err ...", Toast.LENGTH_SHORT).show();
+            finish();
+        }
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
