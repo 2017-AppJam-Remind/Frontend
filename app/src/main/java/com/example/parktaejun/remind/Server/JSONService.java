@@ -1,5 +1,6 @@
 package com.example.parktaejun.remind.Server;
 
+import java.io.File;
 import java.util.List;
 
 import okhttp3.MultipartBody;
@@ -20,15 +21,15 @@ public interface JSONService {
 
     @FormUrlEncoded
     @POST("/one")
-    Call<Remind> one_upload(@Field("name") String image, @Field("weather") String user_pw, @Field("memo") String user_name, @Field("file") String file);
+    Call<RemindUp> one_upload(@Field("name") String image, @Field("weather") String user_pw, @Field("memo") String user_name, @Field("file") File file);
 
     @FormUrlEncoded
     @POST("/two")
-    Call<Remind> two_upload(@Field("name") String image, @Field("weather") String user_pw, @Field("memo") String user_name, @Field("file") String file);
+    Call<RemindUp> two_upload(@Field("name") String image, @Field("weather") String user_pw, @Field("memo") String user_name, @Field("file") File file);
 
     @FormUrlEncoded
     @POST("/three")
-    Call<Remind> three_upload(@Field("name") String image, @Field("weather") String user_pw, @Field("memo") String user_name, @Field("file") String file);
+    Call<RemindUp> three_upload(@Field("name") String image, @Field("weather") String user_pw, @Field("memo") String user_name, @Field("file") File file);
 
     @FormUrlEncoded
     @POST("/get")

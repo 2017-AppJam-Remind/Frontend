@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     FloatingActionButton fab;
     Retrofit retrofit;
     SwipeRefreshLayout mBaseLayout;
-    int check;
     JSONService jsonService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         {
             public void onDeviceConnected(String name, String address) {
                 Toast.makeText(getApplicationContext(), "연결되었습니다", Toast.LENGTH_SHORT).show();
+                bt.send("connect", true);
             }
 
             public void onDeviceDisconnected() {
