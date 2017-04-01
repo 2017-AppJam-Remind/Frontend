@@ -34,6 +34,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -63,8 +64,9 @@ public class UploadActivity extends AppCompatActivity {
     Retrofit retrofit;
     JSONService jsonService;
     String check;
-    File file;
+    public static File file;
     String weather;
+    Bitmap image_bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,7 +165,6 @@ public class UploadActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 addImage();
-                file = getNewFile(v.getContext(), "remind");
                 Toast.makeText(UploadActivity.this, "add after", Toast.LENGTH_SHORT).show();
             }
 
@@ -172,7 +173,8 @@ public class UploadActivity extends AppCompatActivity {
         upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(UploadActivity.this, "Location : " + check, Toast.LENGTH_SHORT).show();
+
+                saveBitmaptoJpeg(image_bitmap, "Remind", "remind");
 
                 if (file.exists()) {
                     Toast.makeText(UploadActivity.this, "file exist", Toast.LENGTH_SHORT).show();
@@ -212,7 +214,7 @@ public class UploadActivity extends AppCompatActivity {
                     //String name_Str = getImageNameToUri(data.getData());
 
                     //이미지 데이터를 비트맵으로 받아온다.
-                    Bitmap image_bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
+                    image_bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
 
                     //배치해놓은 ImageView에 set
                     imageButton.setImageBitmap(image_bitmap);
@@ -237,36 +239,6 @@ public class UploadActivity extends AppCompatActivity {
         startActivityForResult(intent, MY_PERMISSION_REQUEST_STORAGE);
     }
 
-    public static String getFolderName(String name) {
-        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), name);
-
-        if (!mediaStorageDir.exists()) {
-            if (!mediaStorageDir.mkdirs()) {
-                return "";
-            }
-        }
-        return mediaStorageDir.getAbsolutePath();
-    }
-
-    public static File getNewFile(Context context, String folderName) {
-
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.KOREA);
-
-        String timeStamp = simpleDateFormat.format(new Date());
-
-        String path;
-        if (isSDAvailable()) {
-            path = getFolderName(folderName) + File.separator + timeStamp + ".jpg";
-        } else {
-            path = context.getFilesDir().getPath() + File.separator + timeStamp + ".jpg";
-        }
-
-        if (TextUtils.isEmpty(path)) {
-            return null;
-        }
-
-        return new File(path);
-    }
 
     public void one_upload() {
         Call<RemindUp> call;
@@ -330,10 +302,6 @@ public class UploadActivity extends AppCompatActivity {
         });
     }
 
-    private static boolean isSDAvailable() {
-        return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
-    }
-
     public void reqPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
@@ -343,4 +311,27 @@ public class UploadActivity extends AppCompatActivity {
         }
     }
 
+    public static void saveBitmaptoJpeg(Bitmap bitmap,String folder, String name){
+        String ex_storage =Environment.getExternalStorageDirectory().getAbsolutePath();
+        // Get Absolute Path in External Sdcard
+        String folder_name = "/"+folder+"/";
+        String file_name = name+".jpg";
+        String string_path = ex_storage+folder_name;
+
+        try{
+            file = new File(string_path);
+            if(!file.isDirectory()){
+                file.mkdirs();
+            }
+            FileOutputStream out = new FileOutputStream(string_path+file_name);
+
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            out.close();
+
+        }catch(FileNotFoundException exception){
+            Log.e("FileNotFoundException", exception.getMessage());
+        }catch(IOException exception){
+            Log.e("IOException", exception.getMessage());
+        }
+    }
 }
