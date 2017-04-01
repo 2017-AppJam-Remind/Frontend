@@ -21,6 +21,7 @@ import com.example.parktaejun.remind.Datas.Data;
 import com.example.parktaejun.remind.Font.Font;
 import com.example.parktaejun.remind.Server.JSONService;
 import com.example.parktaejun.remind.Server.Remind;
+import com.example.parktaejun.remind.Tutorial.Tutorial_4_Fragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +39,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     MainListAdapter mainListAdapter;
     List<Data> items = new ArrayList<>();
     ListView listview;
-    BluetoothSPP bt;
     String receive;
     FloatingActionButton fab;
     Retrofit retrofit;
@@ -55,7 +55,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         mainListAdapter = new MainListAdapter(this, items);
         listview.setAdapter(mainListAdapter);
 
-        final Button button = (Button)findViewById(R.id.btn);
+        Intent intent = this.getIntent();
+        receive = intent.getStringExtra("message");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -73,57 +74,13 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 finish();
             }
         });
-        bt = new BluetoothSPP(this);
-
-        if(!bt.isBluetoothAvailable())
-        {
-            Toast.makeText(getApplicationContext(), "블루투스를 켜주세요", Toast.LENGTH_SHORT).show();
-            finish();
-        }
-
-        bt.setBluetoothConnectionListener(new BluetoothSPP.BluetoothConnectionListener()
-
-        {
-            public void onDeviceConnected(String name, String address) {
-                Toast.makeText(getApplicationContext(), "연결되었습니다", Toast.LENGTH_SHORT).show();
-            }
-
-            public void onDeviceDisconnected() {
-                Toast.makeText(getApplicationContext(), "연결이끊겼습니다", Toast.LENGTH_SHORT).show();
-            }
-
-            public void onDeviceConnectionFailed() {
-                Toast.makeText(getApplicationContext(), "연결에 실패하였습니다", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        bt.setAutoConnectionListener(new BluetoothSPP.AutoConnectionListener() {
-            public void onNewConnection(String name, String address) {
-                Toast.makeText(getApplicationContext(), "새롭게 연결하였습니다", Toast.LENGTH_SHORT).show();
-                button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        bt.send("z",true);
-                    }
-                });
-            }
-
-            public void onAutoConnectionStarted() {
-                Toast.makeText(getApplicationContext(), "자동연결이 시작되었습니다", Toast.LENGTH_SHORT).show();
-                bt.send("z",true);
-            }
-        });
-        bt.setOnDataReceivedListener(new BluetoothSPP.OnDataReceivedListener() {
-            public void onDataReceived(final byte[] data, final String message) {
-
-                Toast.makeText(getApplicationContext(), "데이터를 받아옵니다", Toast.LENGTH_SHORT).show();
 
                 fab = (FloatingActionButton)findViewById(R.id.float_btn);
                 fab.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent uploadIntent = new Intent(MainActivity.this, UploadActivity.class);
-                        uploadIntent.putExtra("location", message);
+                        uploadIntent.putExtra("location", receive);
                         startActivity(uploadIntent);
                     }
                 });
@@ -136,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 retrofit = new Retrofit.Builder().baseUrl("http://soylatte.kr:3000").addConverterFactory(GsonConverterFactory.create()).build();
                 jsonService = retrofit.create(JSONService.class);
 
-                receive = message;
+
                 mBaseLayout.post(new Runnable() {
                     @Override
                     public void run() {
@@ -162,29 +119,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         infoIntent.putExtra("name", name);
                         infoIntent.putExtra("weather", weather);
                         infoIntent.putExtra("memo", memo);
-                        bt.send(weather, true);
+                        Tutorial_4_Fragment.bt.send(weather, true);
                         startActivity(infoIntent);
                     }
                 });
             }
-        });
-    }
 
-    public void onStart() {
-        super.onStart();
-        if (!bt.isBluetoothEnabled()) {
-            bt.enable();
-        } else {
-            if (!bt.isServiceAvailable()) {
-                bt.setupService();
-                bt.startService(BluetoothState.DEVICE_OTHER);
-                setup();
-            }
-        }
-    }
-    public void setup() {
-        bt.autoConnect("si_ba");
-    }
 
     public void loadRemind(JSONService jsonService){
         Call<Remind> call;

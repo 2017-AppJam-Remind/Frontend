@@ -67,5 +67,4 @@ public class MainListAdapter extends ArrayAdapter<Data> {
         }
         return view;
     }
-
 }
