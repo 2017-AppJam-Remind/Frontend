@@ -67,24 +67,27 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
 
             public void onDeviceDisconnected() {
-                Toast.makeText(getApplicationContext()
-                        , "연결이끊겼습니다"
-                        , Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "연결이끊겼습니다", Toast.LENGTH_SHORT).show();
             }
 
             public void onDeviceConnectionFailed() {
+                Toast.makeText(getApplicationContext(), "연결에 실패하였습니다", Toast.LENGTH_SHORT).show();
             }
         });
 
         bt.setAutoConnectionListener(new BluetoothSPP.AutoConnectionListener() {
             public void onNewConnection(String name, String address) {
+                Toast.makeText(getApplicationContext(), "새롭게 연결하였습니다", Toast.LENGTH_SHORT).show();
             }
 
             public void onAutoConnectionStarted() {
+                Toast.makeText(getApplicationContext(), "자동연결이 시작되었습니다", Toast.LENGTH_SHORT).show();
             }
         });
         bt.setOnDataReceivedListener(new BluetoothSPP.OnDataReceivedListener() {
             public void onDataReceived(final byte[] data, final String message) {
+
+                Toast.makeText(getApplicationContext(), "데이터를 받아옵니다", Toast.LENGTH_SHORT).show();
 
                 fab = (FloatingActionButton)findViewById(R.id.float_btn);
                 fab.setOnClickListener(new View.OnClickListener() {

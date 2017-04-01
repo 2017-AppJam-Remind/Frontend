@@ -32,8 +32,10 @@ public class Tutorial_4_Fragment extends Fragment {
             public void onClick(View v) {
                 Intent mainActivity = new Intent(getActivity(), MainActivity.class);
                 startActivity(mainActivity);
+                getActivity().finish();
             }
         });
+
         return view;
     }
 }
