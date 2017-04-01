@@ -3,17 +3,18 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:background="@color/colorPrimary"
-    android:weightSum="10"
+    android:weightSum="20"
     android:gravity="center"
     android:layout_height="80dp">
     <ImageView
-        android:layout_weight="2"
+        android:layout_weight="3"
         android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:layout_margin="0dp"
         android:src="@drawable/arrow"/>
 
     <ImageView
-        android:layout_weight="6"
+        android:layout_weight="14"
         android:id="@+id/toolbar_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -23,7 +24,7 @@
         android:textSize="20sp"/>
 
     <android.support.v4.widget.Space
-        android:layout_weight="2"
+        android:layout_weight="3"
         android:layout_width="0dp"
         android:layout_height="match_parent" />
 </LinearLayout>

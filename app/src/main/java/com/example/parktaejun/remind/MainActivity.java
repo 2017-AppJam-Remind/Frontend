@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -61,7 +62,17 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
         View toolbar_view = LayoutInflater.from(this).inflate(R.layout.toolbar, null);
+        ImageView title = (ImageView) toolbar_view.findViewById(R.id.toolbar_title);
+        title.setImageResource(R.drawable.logo);
         getSupportActionBar().setCustomView(toolbar_view);
+
+        toolbar_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("TAG", "click");
+                finish();
+            }
+        });
 
         bt = new BluetoothSPP(this);
 

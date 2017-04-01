@@ -5,12 +5,13 @@
     android:id="@+id/activity_upload"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="2"
+    android:weightSum="20"
     android:orientation="vertical"
     tools:context="com.example.parktaejun.remind.InfoActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
+        android:layout_weight="2"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         android:background="@color/colorPrimary"
         android:layout_width="match_parent"
@@ -22,14 +23,14 @@
         android:layout_marginRight="16dp"
         android:layout_marginLeft="16dp"
         android:id="@+id/image"
-        android:layout_weight="1"
+        android:layout_weight="9"
         android:layout_width="match_parent"
         android:layout_height="0dp" />
 
     <LinearLayout
         android:orientation="vertical"
         android:weightSum="6"
-        android:layout_weight="1"
+        android:layout_weight="9"
         android:layout_width="match_parent"
         android:layout_height="0dp">
 <LinearLayout
