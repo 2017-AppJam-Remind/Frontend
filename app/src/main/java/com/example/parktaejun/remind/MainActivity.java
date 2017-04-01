@@ -1,6 +1,7 @@
 package com.example.parktaejun.remind;
 
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     ListView listview;
     BluetoothSPP bt;
     String receive;
+    FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,14 @@ public class MainActivity extends AppCompatActivity {
 
         Font.setGlobalFont(this, getWindow().getDecorView());
 
+        fab = (FloatingActionButton)findViewById(R.id.float_btn);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent uploadIntent = new Intent(MainActivity.this, UploadActivity.class);
+                startActivity(uploadIntent);
+            }
+        });
         listview = (ListView)findViewById(R.id.listview);
         mainListAdapter = new MainListAdapter(this, items);
         listview.setAdapter(mainListAdapter);
@@ -110,6 +120,4 @@ public class MainActivity extends AppCompatActivity {
     public void setup() {
         bt.autoConnect("main");
     }
-
-
 }

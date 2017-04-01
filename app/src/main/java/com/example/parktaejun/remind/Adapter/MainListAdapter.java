@@ -1,10 +1,13 @@
 package com.example.parktaejun.remind.Adapter;
 
 import android.content.Context;
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.parktaejun.remind.Datas.Data;
 import com.example.parktaejun.remind.R;
@@ -43,8 +46,22 @@ public class MainListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = null;
-
         view = LayoutInflater.from(context).inflate(R.layout.items_main_list, null);
+
+        //ImageView imageView = (ImageView)view.findViewById(R.id.image);
+        TextView nameText = (TextView)view.findViewById(R.id.name);
+        TextView dateText = (TextView)view.findViewById(R.id.date);
+
+        nameText.setText(items.get(position).getName());
+        dateText.setText(items.get(position).getDate());
+
         return view;
     }
+
+    public void add(Data item){
+        this.items.add(item);
+        this.notifyDataSetChanged();
+    }
+
+
 }

@@ -19,8 +19,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
-        <activity android:name=".TutorialActivity"></activity>
-        <activity android:name=".InfoActivity"></activity>
+        <activity android:name=".TutorialActivity" />
+        <activity android:name=".InfoActivity" />
+        <activity android:name=".UploadActivity"></activity>
     </application>
 
 </manifest>
