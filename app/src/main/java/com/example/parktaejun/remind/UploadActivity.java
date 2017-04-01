@@ -80,10 +80,10 @@ public class UploadActivity extends AppCompatActivity {
         name = (EditText) findViewById(R.id.name);
         memo = (EditText) findViewById(R.id.memo);
 
-        sun = (ImageView)findViewById(R.id.sun);
-        cloud = (ImageView)findViewById(R.id.cloud);
-        rain = (ImageView)findViewById(R.id.rain);
-        snow = (ImageView)findViewById(R.id.snow);
+        sun = (ImageView) findViewById(R.id.sun);
+        cloud = (ImageView) findViewById(R.id.cloud);
+        rain = (ImageView) findViewById(R.id.rain);
+        snow = (ImageView) findViewById(R.id.snow);
 
         upload = (Button) findViewById(R.id.upload);
         cancel = (Button) findViewById(R.id.cancel);
@@ -165,11 +165,6 @@ public class UploadActivity extends AppCompatActivity {
                 addImage();
                 file = getNewFile(v.getContext(), "remind");
                 Toast.makeText(UploadActivity.this, "add after", Toast.LENGTH_SHORT).show();
-                if(file.exists()){
-                    Bitmap myBitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-                    ImageView myImage = (ImageView) findViewById(R.id.image);
-                    myImage.setImageBitmap(myBitmap);
-                }
             }
 
         });
@@ -179,13 +174,19 @@ public class UploadActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Toast.makeText(UploadActivity.this, "Location : " + check, Toast.LENGTH_SHORT).show();
 
-                if(check.equals("one")){
+                if (file.exists()) {
+                    Toast.makeText(UploadActivity.this, "file exist", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(UploadActivity.this, "file doesn't exist", Toast.LENGTH_SHORT).show();
+                }
+
+                if (check.equals("one")) {
                     one_upload();
-                }else if(check.equals("two")){
+                } else if (check.equals("two")) {
                     two_upload();
-                }else if(check.equals("three")){
+                } else if (check.equals("three")) {
                     three_upload();
-                }else{
+                } else {
                     Toast.makeText(UploadActivity.this, "ERR ...", Toast.LENGTH_SHORT).show();
                     finish();
                 }
@@ -203,8 +204,8 @@ public class UploadActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK){
-            if(requestCode == MY_PERMISSION_REQUEST_STORAGE){
+        if (resultCode == RESULT_OK) {
+            if (requestCode == MY_PERMISSION_REQUEST_STORAGE) {
                 mImageUri = data.getData();
                 try {
                     //Uri에서 이미지 이름을 얻어온다.
@@ -218,20 +219,19 @@ public class UploadActivity extends AppCompatActivity {
 
                     //Toast.makeText(getBaseContext(), "name_Str : "+name_Str , Toast.LENGTH_SHORT).show();
 
-                }
-
-                catch (FileNotFoundException e) {
+                } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (Exception e) {
-                    e.printStackTrace();			}
+                    e.printStackTrace();
+                }
 
             }
         }
     }
 
-    public void addImage(){
+    public void addImage() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
         startActivityForResult(intent, MY_PERMISSION_REQUEST_STORAGE);
@@ -268,16 +268,16 @@ public class UploadActivity extends AppCompatActivity {
         return new File(path);
     }
 
-    public void one_upload(){
+    public void one_upload() {
         Call<RemindUp> call;
         call = jsonService.one_upload(name.getText().toString(), weather, memo.getText().toString(), file);
         call.enqueue(new Callback<RemindUp>() {
             @Override
             public void onResponse(Call<RemindUp> call, Response<RemindUp> response) {
-                if(response.code() == 200){
+                if (response.code() == 200) {
                     Toast.makeText(UploadActivity.this, "SUCCESS", Toast.LENGTH_SHORT).show();
                     finish();
-                }else{
+                } else {
                     Toast.makeText(UploadActivity.this, response.code() + " : ERR ... ", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -290,13 +290,13 @@ public class UploadActivity extends AppCompatActivity {
         });
     }
 
-    public void two_upload(){
+    public void two_upload() {
         Call<RemindUp> call;
         call = jsonService.two_upload(name.getText().toString(), weather, memo.getText().toString(), file);
         call.enqueue(new Callback<RemindUp>() {
             @Override
             public void onResponse(Call<RemindUp> call, Response<RemindUp> response) {
-                if(response.code() == 200){
+                if (response.code() == 200) {
                     Toast.makeText(UploadActivity.this, "SUCCESS", Toast.LENGTH_SHORT).show();
                     finish();
                 }
@@ -310,13 +310,13 @@ public class UploadActivity extends AppCompatActivity {
         });
     }
 
-    public void three_upload(){
+    public void three_upload() {
         Call<RemindUp> call;
         call = jsonService.three_upload(name.getText().toString(), weather, memo.getText().toString(), file);
         call.enqueue(new Callback<RemindUp>() {
             @Override
             public void onResponse(Call<RemindUp> call, Response<RemindUp> response) {
-                if(response.code() == 200){
+                if (response.code() == 200) {
                     Toast.makeText(UploadActivity.this, "SUCCESS", Toast.LENGTH_SHORT).show();
                     finish();
                 }
@@ -334,12 +334,13 @@ public class UploadActivity extends AppCompatActivity {
         return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
     }
 
-    public void reqPermission(){
+    public void reqPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if(checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
-                    checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-                requestPermissions(new String[] {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 100);
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
+                    checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 100);
             }
         }
     }
+
 }

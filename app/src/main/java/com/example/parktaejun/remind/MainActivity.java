@@ -73,7 +73,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 finish();
             }
         });
-
         bt = new BluetoothSPP(this);
 
         if(!bt.isBluetoothAvailable())
@@ -111,6 +110,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             public void onAutoConnectionStarted() {
                 Toast.makeText(getApplicationContext(), "자동연결이 시작되었습니다", Toast.LENGTH_SHORT).show();
+                bt.send("z",true);
             }
         });
         bt.setOnDataReceivedListener(new BluetoothSPP.OnDataReceivedListener() {
