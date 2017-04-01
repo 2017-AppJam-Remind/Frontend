@@ -17,6 +17,9 @@ public class Tutorial_1_Fragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.activity_tutorial_1_fragment, container, false);
+
+
+
         return view;
     }
 }

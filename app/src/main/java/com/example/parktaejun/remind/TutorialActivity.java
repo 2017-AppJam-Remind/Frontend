@@ -7,6 +7,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.example.parktaejun.remind.Adapter.TutorialAdapter;
+import com.example.parktaejun.remind.Font.Font;
 
 public class TutorialActivity extends AppCompatActivity {
 
@@ -16,9 +17,7 @@ public class TutorialActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutorial);
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        //전체화면 만들기
+        Font.setGlobalFont(this, getWindow().getDecorView());
 
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         TutorialAdapter tutorialAdapter = new TutorialAdapter(getSupportFragmentManager(), 4);
