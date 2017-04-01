@@ -47,49 +47,15 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         Font.setGlobalFont(this, getWindow().getDecorView());
 
-        fab = (FloatingActionButton)findViewById(R.id.float_btn);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent uploadIntent = new Intent(MainActivity.this, UploadActivity.class);
-                startActivity(uploadIntent);
-            }
-        });
-
-        mBaseLayout = (SwipeRefreshLayout)findViewById(R.id.mBaseLayout);
-        mBaseLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
-
         listview = (ListView)findViewById(R.id.listview);
         mainListAdapter = new MainListAdapter(this, items);
         listview.setAdapter(mainListAdapter);
-
-        mBaseLayout.setOnRefreshListener(this);
-
-        retrofit = new Retrofit.Builder().baseUrl("http://soylatte.kr:3000").addConverterFactory(GsonConverterFactory.create()).build();
-        jsonService = retrofit.create(JSONService.class);
-
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String image = items.get(position).getImage();
-                String name = items.get(position).getName();
-                String date = items.get(position).getDate();
-
-                Intent infoIntent = new Intent(MainActivity.this, InfoActivity.class);
-                infoIntent.putExtra("image", image);
-                infoIntent.putExtra("name", name);
-                infoIntent.putExtra("date", date);
-                startActivity(infoIntent);
-            }
-        });
 
         bt = new BluetoothSPP(this);
 
         if(!bt.isBluetoothAvailable())
         {
-            Toast.makeText(getApplicationContext()
-                    , "블루투스를 켜주세요"
-                    , Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "블루투스를 켜주세요", Toast.LENGTH_SHORT).show();
             finish();
         }
 
@@ -97,8 +63,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         {
             public void onDeviceConnected(String name, String address) {
-                Toast.makeText(getApplicationContext()
-                        , "연결되었습니다", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "연결되었습니다", Toast.LENGTH_SHORT).show();
             }
 
             public void onDeviceDisconnected() {
@@ -119,16 +84,49 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
         });
         bt.setOnDataReceivedListener(new BluetoothSPP.OnDataReceivedListener() {
-            public void onDataReceived(byte[] data, String message) {
+            public void onDataReceived(byte[] data, final String message) {
+
+                fab = (FloatingActionButton)findViewById(R.id.float_btn);
+                fab.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent uploadIntent = new Intent(MainActivity.this, UploadActivity.class);
+                        uploadIntent.putExtra("location", message);
+                        startActivity(uploadIntent);
+                    }
+                });
+
+                mBaseLayout = (SwipeRefreshLayout)findViewById(R.id.mBaseLayout);
+                mBaseLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
+
+                mBaseLayout.setOnRefreshListener(MainActivity.this);
+
+                retrofit = new Retrofit.Builder().baseUrl("http://soylatte.kr:3000").addConverterFactory(GsonConverterFactory.create()).build();
+                jsonService = retrofit.create(JSONService.class);
+
                 receive = message;
-                check = Integer.parseInt(message);
                 mBaseLayout.post(new Runnable() {
                     @Override
                     public void run() {
                         mBaseLayout.setRefreshing(true);
                         mainListAdapter.clear();
-                        loadRemind(check, jsonService);
+                        loadRemind(jsonService);
                         mBaseLayout.setRefreshing(false);
+                    }
+                });
+
+                listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        String image = items.get(position).getImage();
+                        String name = items.get(position).getName();
+                        String weather = items.get(position).getWeather();
+                        Intent infoIntent = new Intent(MainActivity.this, InfoActivity.class);
+                        infoIntent.putExtra("image", image);
+                        infoIntent.putExtra("name", name);
+                        infoIntent.putExtra("weather", weather);
+                        bt.send(weather, true);
+                        startActivity(infoIntent);
                     }
                 });
             }
@@ -151,74 +149,36 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         bt.autoConnect("main");
     }
 
-    public void loadRemind(int check, JSONService jsonService){
-        Call<List<Remind>> call;
-        if(check == 1) {
-            call = jsonService.one_download();
-            call.enqueue(new Callback<List<Remind>>() {
+    public void loadRemind(JSONService jsonService){
+        Call<Remind> call;
+        call = jsonService.download(receive);
+        call.enqueue(new Callback<Remind>() {
                 @Override
-                public void onResponse(Call<List<Remind>> call, Response<List<Remind>> response) {
+                public void onResponse(Call<Remind> call, Response<Remind> response) {
                     if (response.code() == 200) {
-                        List<Remind> reminds = response.body();
+                        List<Remind> reminds = (List<Remind>) response.body();
                         for (Remind remind : reminds) {
-                            Log.e("article", remind.image + "," + remind.name + "," + remind.date);
-                            initList(remind.image,remind.name, remind.date);
+                            Log.d("remind", remind.image + "," + remind.name);
+                            initList(remind.image,remind.name,remind.weather);
                         }
                     }
                 }
                 @Override
-                public void onFailure(Call<List<Remind>> call, Throwable t) {
-                    Toast.makeText(getApplicationContext(), "1번 알수없는 에러에요..", Toast.LENGTH_SHORT).show();
+                public void onFailure(Call<Remind> call, Throwable t) {
+                    Toast.makeText(getApplicationContext(), receive + "번 알수없는 에러에요..", Toast.LENGTH_SHORT).show();
                 }
             });
-        }else if(check == 2){
-            call = jsonService.two_download();
-            call.enqueue(new Callback<List<Remind>>() {
-                @Override
-                public void onResponse(Call<List<Remind>> call, Response<List<Remind>> response) {
-                    if (response.code() == 200) {
-                        List<Remind> reminds = response.body();
-                        for (Remind remind : reminds) {
-                            Log.e("article", remind.image + "," + remind.name + "," + remind.date);
-                            initList(remind.image,remind.name, remind.date);
-                        }
-                    }
-                }
-                @Override
-                public void onFailure(Call<List<Remind>> call, Throwable t) {
-                    Toast.makeText(getApplicationContext(), "1번 알수없는 에러에요..", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }else if(check == 3){
-            call = jsonService.three_download();
-            call.enqueue(new Callback<List<Remind>>() {
-                @Override
-                public void onResponse(Call<List<Remind>> call, Response<List<Remind>> response) {
-                    if (response.code() == 200) {
-                        List<Remind> reminds = response.body();
-                        for (Remind remind : reminds) {
-                            Log.e("article", remind.image + "," + remind.name + "," + remind.date);
-                            initList(remind.image,remind.name, remind.date);
-                        }
-                    }
-                }
-                @Override
-                public void onFailure(Call<List<Remind>> call, Throwable t) {
-                    Toast.makeText(getApplicationContext(), "1번 알수없는 에러에요..", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
     }
 
-    public void initList(String image, String name, String date){
-        mainListAdapter.add(new Data(image, name,date));
+    public void initList(String image, String name, String weather){
+        mainListAdapter.add(new Data(image,name,weather));
         mainListAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onRefresh() {
         mainListAdapter.clear();
-        loadRemind(check, jsonService);
+        loadRemind(jsonService);
         mBaseLayout.setRefreshing(false);
     }
 }

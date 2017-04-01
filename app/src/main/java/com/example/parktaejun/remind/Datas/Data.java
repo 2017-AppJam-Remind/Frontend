@@ -8,12 +8,12 @@ public class Data {
 
     private String image;
     private String name;
-    private String date;
+    private String weather;
 
-    public Data(String image, String name, String date){
+    public Data(String image, String name, String weather){
         this.image = image;
         this.name = name;
-        this.date = date;
+        this.weather = weather;
     }
 
     public String getImage(){
@@ -30,10 +30,10 @@ public class Data {
         this.name = name;
     }
 
-    public String getDate(){
-        return date;
+    public String getWeather(){
+        return weather;
     }
-    public void setDate(String date){
-        this.date = date;
+    public void setWeather(String weather){
+        this.weather = weather;
     }
 }

@@ -17,6 +17,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import app.akexorcist.bluetotohspp.library.BluetoothSPP;
+
 /**
  * Created by parktaejun on 2017. 4. 1..
  */
@@ -29,8 +31,7 @@ public class MainListAdapter extends ArrayAdapter<Data> {
         // 상위 클래스의 초기화 과정
         // context, 0, 자료구조
         super(context, 0, object);
-        mInflater = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 //        Typeface tf = Typeface.createFromAsset(context.getAssets(), "NotoSansCJKkr-Regular.otf");
 //        name.setTypeface(tf);
 //        family.setTypeface(tf);
@@ -53,14 +54,14 @@ public class MainListAdapter extends ArrayAdapter<Data> {
         if (data != null) {
             ImageView imageView = (ImageView)view.findViewById(R.id.image);
             TextView nameText = (TextView) view.findViewById(R.id.name);
-            TextView dateText = (TextView) view.findViewById(R.id.date);
+            TextView weatherText = (TextView) view.findViewById(R.id.weather);
 
             String url = data.getImage();
             Picasso.with(getContext())
                     .load(url)
                     .into(imageView);
             nameText.setText(data.getName());
-            dateText.setText(data.getDate());
+            weatherText.setText(data.getWeather());
         }
         return view;
     }

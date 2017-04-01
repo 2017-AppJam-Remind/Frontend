@@ -7,11 +7,13 @@ package com.example.parktaejun.remind.Server;
 public class Remind {
     public String image;
     public String name;
-    public String date;
+    public String memo;
+    public String weather;
 
-    public Remind(String image, String name, String date){
+    public Remind(String image, String name, String memo, String weather){
         this.image = image;
         this.name = name;
-        this.date = date;
+        this.memo = memo;
+        this.weather = weather;
     }
 }
