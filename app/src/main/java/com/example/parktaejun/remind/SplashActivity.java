@@ -30,7 +30,7 @@ public class SplashActivity extends Activity {
         hd.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent loginIntent = new Intent(SplashActivity.this, MainActivity.class);
+                Intent loginIntent = new Intent(SplashActivity.this, TutorialActivity.class);
                 startActivity(loginIntent);
                 finish();       // 2 초후 이미지를 닫아버림
             }
