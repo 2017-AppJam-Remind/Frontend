@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_tutorial_3__fragment"
+    android:id="@+id/activity_tutorial_1_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.parktaejun.remind.Tutorial.Tutorial_3_Fragment">
+    tools:context="com.example.parktaejun.remind.Tutorial.Tutorial_1_Fragment">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="Tut3"/>
+        android:text="Tut1"/>
 
     <ImageView
-        android:id="@+id/tutorial3"
+        android:id="@+id/tutorial1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        />
 
 </LinearLayout>

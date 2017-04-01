@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import com.example.parktaejun.remind.Tutorial.Tutorial_1_Fragment;
 import com.example.parktaejun.remind.Tutorial.Tutorial_2_Fragment;
 import com.example.parktaejun.remind.Tutorial.Tutorial_3_Fragment;
+import com.example.parktaejun.remind.Tutorial.Tutorial_4_Fragment;
 
 /**
  * Created by parktaejun on 2017. 4. 1..
@@ -33,6 +34,9 @@ public class Adapter_Tutorial extends FragmentStatePagerAdapter{
             case 2:
                 Tutorial_3_Fragment tutorial_3_fragment = new Tutorial_3_Fragment();
                 return tutorial_3_fragment;
+            case 3:
+                Tutorial_4_Fragment tutorial_4_fragment = new Tutorial_4_Fragment();
+                return tutorial_4_fragment;
             default:
                 return null;
         }
