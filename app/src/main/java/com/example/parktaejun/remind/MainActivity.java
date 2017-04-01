@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         }
     }
     public void setup() {
-        bt.autoConnect("main");
+        bt.autoConnect("si_ba");
     }
 
     public void loadRemind(JSONService jsonService){
