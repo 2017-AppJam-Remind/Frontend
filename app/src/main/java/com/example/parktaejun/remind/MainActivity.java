@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
         });
         bt.setOnDataReceivedListener(new BluetoothSPP.OnDataReceivedListener() {
-            public void onDataReceived(byte[] data, final String message) {
+            public void onDataReceived(final byte[] data, final String message) {
 
                 fab = (FloatingActionButton)findViewById(R.id.float_btn);
                 fab.setOnClickListener(new View.OnClickListener() {
@@ -119,12 +119,17 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         String image = items.get(position).getImage();
+                        String date = items.get(position).getDate();
                         String name = items.get(position).getName();
                         String weather = items.get(position).getWeather();
+                        String memo = items.get(position).getMemo();
+
                         Intent infoIntent = new Intent(MainActivity.this, InfoActivity.class);
                         infoIntent.putExtra("image", image);
+                        infoIntent.putExtra("date", date);
                         infoIntent.putExtra("name", name);
                         infoIntent.putExtra("weather", weather);
+                        infoIntent.putExtra("memo", memo);
                         bt.send(weather, true);
                         startActivity(infoIntent);
                     }
@@ -158,8 +163,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     if (response.code() == 200) {
                         List<Remind> reminds = (List<Remind>) response.body();
                         for (Remind remind : reminds) {
-                            Log.d("remind", remind.image + "," + remind.name);
-                            initList(remind.image,remind.name,remind.weather);
+                            Log.d("remind", remind.image + "," + remind.date + "," + remind.name + "," + remind.weather + "," + remind.memo);
+                            initList(remind.image, remind.date, remind.name, remind.weather, remind.memo);
                         }
                     }
                 }
@@ -170,8 +175,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             });
     }
 
-    public void initList(String image, String name, String weather){
-        mainListAdapter.add(new Data(image,name,weather));
+    public void initList(String image, String date, String name, String weather, String memo){
+        mainListAdapter.add(new Data( image,  date,  name,  weather,  memo));
         mainListAdapter.notifyDataSetChanged();
     }
 

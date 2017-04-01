@@ -7,13 +7,17 @@ package com.example.parktaejun.remind.Datas;
 public class Data {
 
     private String image;
+    private String date;
     private String name;
     private String weather;
+    private String memo;
 
-    public Data(String image, String name, String weather){
+    public Data(String image, String date, String name, String weather, String memo){
         this.image = image;
+        this.date = date;
         this.name = name;
         this.weather = weather;
+        this.memo = memo;
     }
 
     public String getImage(){
@@ -21,6 +25,13 @@ public class Data {
     }
     public void setImage(String image){
         this.image = image;
+    }
+
+    public String getDate(){
+        return date;
+    }
+    public void setDate(String date){
+        this.date = date;
     }
 
     public String getName(){
@@ -36,4 +47,12 @@ public class Data {
     public void setWeather(String weather){
         this.weather = weather;
     }
+
+    public String getMemo(){
+        return memo;
+    }
+    public void setMemo(String memo){
+        this.memo = memo;
+    }
+
 }

@@ -20,7 +20,7 @@ public class Font {
                 for(int i = 0; i <len; i++){
                     View v = vg.getChildAt(i);
                     if(v instanceof TextView){
-                        ((TextView) v).setTypeface(Typeface.createFromAsset(context.getAssets(), "폰트이름"));
+                        ((TextView) v).setTypeface(Typeface.createFromAsset(context.getAssets(), "Arista_Light_Trial"));
                     }
                     setGlobalFont(context, v);
                 }
