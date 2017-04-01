@@ -43,8 +43,7 @@ public class InfoActivity extends AppCompatActivity {
                 .load(intent.getStringExtra("image"))
                 .into(imageView);
 
-        String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
-        date.setText(currentDateTimeString);
+        date.setText(intent.getStringExtra("date"));
         name.setText(intent.getStringExtra("name"));
         weather.setText(intent.getStringExtra("weather"));
         memo.setText(intent.getStringExtra("memo"));
