@@ -43,6 +43,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static com.example.parktaejun.remind.Tutorial.Tutorial_4_Fragment.bt;
+
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     MainListAdapter mainListAdapter;
@@ -53,12 +55,15 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     Retrofit retrofit;
     SwipeRefreshLayout mBaseLayout;
     JSONService jsonService;
+    AQuery aq = new AQuery(this);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         Font.setGlobalFont(this, getWindow().getDecorView());
+
+        Toast.makeText(this, "데이터를 받아옵니다", Toast.LENGTH_SHORT).show();
 
         listview = (ListView)findViewById(R.id.listview);
         mainListAdapter = new MainListAdapter(this, items);
@@ -95,7 +100,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
         });
 
-        final AQuery aq = new AQuery(this);
 
 
         mBaseLayout = (SwipeRefreshLayout)findViewById(R.id.mBaseLayout);
@@ -112,23 +116,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             public void run() {
                 mBaseLayout.setRefreshing(true);
                 mainListAdapter.clear();
-                aq.ajax("http://soylatte.kr:3000/get", JSONArray.class, new AjaxCallback<JSONArray>(){
-                    @Override
-                    public void callback(String url, JSONArray object, AjaxStatus status) {
-                        super.callback(url, object, status);
-                        Log.d("dudco", object.toString());
-                        try {
-                            List<JSONObject> jsons = (List<JSONObject>) object;
-                            for(JSONObject jsonObject : jsons){
-                                initList(jsonObject.get("name"), jsonObject.get("imageName"), jsonObject.get("time"), jsonObject.get("weather"), jsonObject.get("memo"));
-                            }
-                            Log.d("dudco", jsons.get(Integer.parseInt("name")).toString());
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-//                loadRemind(jsonService);
+                loadList();
                 mBaseLayout.setRefreshing(false);
             }
         });
@@ -136,11 +124,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String image = (String) items.get(position).getImage();
-                String date = (String) items.get(position).getDate();
-                String name = (String) items.get(position).getName();
-                String weather = (String) items.get(position).getWeather();
-                String memo = (String) items.get(position).getMemo();
+                String image = items.get(position).getImage();
+                String date = items.get(position).getDate();
+                String name = items.get(position).getName();
+                String weather = items.get(position).getWeather();
+                String memo = items.get(position).getMemo();
 
                 Intent infoIntent = new Intent(MainActivity.this, InfoActivity.class);
                 infoIntent.putExtra("image", image);
@@ -148,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 infoIntent.putExtra("name", name);
                 infoIntent.putExtra("weather", weather);
                 infoIntent.putExtra("memo", memo);
-                Tutorial_4_Fragment.bt.send(weather, true);
+                bt.send(weather, true);
                 startActivity(infoIntent);
             }
         });
@@ -217,7 +205,25 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 //        }
 //    }
 
-    public void initList(Object name, Object image, Object date, Object weather, Object memo){
+    public void loadList(){
+        aq.ajax("http://soylatte.kr:3000/get", JSONArray.class, new AjaxCallback<JSONArray>(){
+            @Override
+            public void callback(String url, JSONArray object, AjaxStatus status) {
+                super.callback(url, object, status);
+                Log.d("dudco", object.toString());
+                try {
+                    for(int i = 0; i < object.length(); i++){
+                        JSONObject jsons = (JSONObject) object.get(i);
+                        initList(jsons.get("name").toString(), jsons.get("imageName").toString(), jsons.get("time").toString(), jsons.get("weather").toString(), jsons.get("memo").toString());
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public void initList(String name, String image, String date, String weather, String memo){
         mainListAdapter.add(new Data( name,  image,  date,  weather,  memo));
         mainListAdapter.notifyDataSetChanged();
     }
@@ -225,7 +231,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     @Override
     public void onRefresh() {
         mainListAdapter.clear();
-//        loadRemind(jsonService);
+        loadList();
         mBaseLayout.setRefreshing(false);
     }
 }

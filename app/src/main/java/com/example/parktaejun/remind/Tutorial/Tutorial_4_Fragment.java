@@ -57,7 +57,6 @@ public class Tutorial_4_Fragment extends Fragment {
 
         bt.setAutoConnectionListener(new BluetoothSPP.AutoConnectionListener() {
             public void onNewConnection(String name, String address) {
-                Toast.makeText(getContext(), "새롭게 연결하였습니다", Toast.LENGTH_SHORT).show();
                 linearLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -67,14 +66,11 @@ public class Tutorial_4_Fragment extends Fragment {
             }
 
             public void onAutoConnectionStarted() {
-                Toast.makeText(getContext(), "자동연결이 시작되었습니다", Toast.LENGTH_SHORT).show();
             }
         });
 
         bt.setOnDataReceivedListener(new BluetoothSPP.OnDataReceivedListener() {
             public void onDataReceived(final byte[] data, final String message) {
-
-                Toast.makeText(getContext(), "데이터를 받아옵니다", Toast.LENGTH_SHORT).show();
                 Intent mainIntent = new Intent(getActivity(), MainActivity.class);
                 mainIntent.putExtra("message", message);
                 startActivity(mainIntent);

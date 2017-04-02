@@ -27,6 +27,10 @@ public class MainListAdapter extends ArrayAdapter<Data> {
 
     private LayoutInflater mInflater;
 
+    TextView dateText;
+    TextView nameText;
+    TextView memoText;
+
     public MainListAdapter(Context context, List<Data> object){
         // 상위 클래스의 초기화 과정
         // context, 0, 자료구조
@@ -53,17 +57,18 @@ public class MainListAdapter extends ArrayAdapter<Data> {
 
         if (data != null) {
             ImageView imageView = (ImageView)view.findViewById(R.id.image);
-            TextView dateText = (TextView) view.findViewById(R.id.date);
-            TextView nameText = (TextView) view.findViewById(R.id.name);
-            TextView memoText = (TextView) view.findViewById(R.id.memo);
+            dateText = (TextView) view.findViewById(R.id.date);
+            nameText = (TextView) view.findViewById(R.id.name);
+            memoText = (TextView) view.findViewById(R.id.memo);
 
-            String url = (String) data.getImage();
+            String url = data.getImage();
             Picasso.with(getContext())
                     .load(url)
                     .into(imageView);
-            dateText.setText((String) data.getDate());
-            nameText.setText((String) data.getName());
-            memoText.setText((String) data.getMemo());
+
+            dateText.setText(data.getDate());
+            nameText.setText(data.getName());
+            memoText.setText(data.getMemo());
         }
         return view;
     }

@@ -165,7 +165,7 @@ public class UploadActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 addImage();
-                Toast.makeText(UploadActivity.this, "add after", Toast.LENGTH_SHORT).show();
+                Toast.makeText(UploadActivity.this, "Add Picture", Toast.LENGTH_SHORT).show();
             }
 
         });
